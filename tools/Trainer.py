@@ -11,7 +11,7 @@ import time
 class ModelNetTrainer(object):
 
     def __init__(self, model, train_loader, val_loader, optimizer, loss_fn, \
-                 model_name, log_dir, num_views=12):
+                 model_name, log_dir, num_views=3):
 
         self.optimizer = optimizer
         self.model = model
@@ -35,8 +35,10 @@ class ModelNetTrainer(object):
         for epoch in range(n_epochs):
             # permute data for mvcnn
             rand_idx = np.random.permutation(int(len(self.train_loader.dataset.filepaths)/self.num_views))
+            
             filepaths_new = []
             for i in range(len(rand_idx)):
+            #for i in range(3):
                 filepaths_new.extend(self.train_loader.dataset.filepaths[rand_idx[i]*self.num_views:(rand_idx[i]+1)*self.num_views])
             self.train_loader.dataset.filepaths = filepaths_new
 
@@ -109,8 +111,8 @@ class ModelNetTrainer(object):
         # out_data = None
         # target = None
 
-        wrong_class = np.zeros(40)
-        samples_class = np.zeros(40)
+        wrong_class = np.zeros(121)
+        samples_class = np.zeros(121)
         all_loss = 0
 
         self.model.eval()
